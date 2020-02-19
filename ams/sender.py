@@ -33,10 +33,10 @@ class Sender(Loggable):
             self.warning(e)
 
     def wakeup(self):
-        self._write(bytes('\r\n\r\n', 'utf8'))  # Hit enter a few times to wake the Printrbot
-        time.sleep(2)  # Wait for Printrbot to initialize
+        self._write(bytes('\r\n\r\n', 'utf8'))  
+        time.sleep(2) 
         self._dev.flushInput()  # Flush startup text in serial input
-
+       
     def send(self, msg):
         if self._validate(msg):
             msg = f'{msg}\n'
@@ -54,7 +54,6 @@ class Sender(Loggable):
     def _read(self):
         if self._dev:
             resp = self._dev.readline()
-            print('asdf', resp)
             return resp
 
     def _log_response(self, msg, resp):

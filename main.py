@@ -87,14 +87,20 @@ def joystick(sender):
 
     return closure
 
-
+def home(s):
+    s.send('G28 XY')
+    
 def main():
     setup_logging()
 
     s = Sender()
-
-    if s.open('/dev/tty.usbmodem1451101'):
+    bot = Bot(s)
+    
+    addr = '/dev/tty.usbmodem1451101'
+    addr = '/dev/ttyACM0'
+    if s.open(addr):
         s.wakeup()
+        bot.home()
         curses.wrapper(joystick(s))
     #    terminal(s)
 
