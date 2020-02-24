@@ -15,8 +15,12 @@
 # ===============================================================================
 
 import logging
-from ams.sender import Sender
 import curses
+
+from ams.sender import Sender
+from ams.bot import Bot
+#from ams.mosaic import Mosaic
+#from ams.camera import Camera
 
 
 def setup_logging():
@@ -29,7 +33,7 @@ def setup_logging():
 
     # create console handler with a higher log level
     ch = logging.StreamHandler()
-    ch.setLevel(logging.ERROR)
+    ch.setLevel(logging.DEBUG)
 
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -63,7 +67,13 @@ def joystick(sender):
 
     def key_right():
         return 'G0 X10'
-
+    
+    def page_up():
+        return 'G0 Z1'
+        
+    def page_down():
+        return 'G0 Z-1'
+        
     def closure(std):
         std.clear()
         std.keypad(True)
@@ -71,7 +81,9 @@ def joystick(sender):
         funcs = {curses.KEY_UP: key_up,
                  curses.KEY_DOWN: key_down,
                  curses.KEY_LEFT: key_left,
-                 curses.KEY_RIGHT: key_right
+                 curses.KEY_RIGHT: key_right,
+                 curses.KEY_PPAGE: page_up,
+                 curses.KEY_NPAGE: page_down
                  }
 
         while 1:
@@ -87,8 +99,7 @@ def joystick(sender):
 
     return closure
 
-def home(s):
-    s.send('G28 XY')
+        
     
 def main():
     setup_logging()
@@ -101,11 +112,17 @@ def main():
     if s.open(addr):
         s.wakeup()
         bot.home()
+        bot.home()
+        
+        #c = Camera()
+        #m = Mosaic(c, bot)
+        #m.run()
+        
         curses.wrapper(joystick(s))
     #    terminal(s)
 
 
 if __name__ == '__main__':
     main()
-
+    
 # ============= EOF =============================================

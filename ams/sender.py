@@ -43,6 +43,7 @@ class Sender(Loggable):
             self._write(bytes(msg, 'utf8'))
             resp = self._read()
             self._log_response(msg, resp)
+            return resp
 
     def _validate(self, msg):
         return True
@@ -57,6 +58,6 @@ class Sender(Loggable):
             return resp
 
     def _log_response(self, msg, resp):
-        self.info(f'{msg}>>{resp}')
+        self.debug(f'{msg}>>{resp}')
 
 # ============= EOF =============================================
